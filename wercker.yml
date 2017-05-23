@@ -61,7 +61,7 @@ deploy-staging:
 prepare-production-image:
   box: python:2-slim
   steps:
-    - telescreen/aliyun-build-ecs-image@0.1.0:
+    - telescreen/aliyun-build-ecs-image@0.1.1:
       name: Build ECS Image
       access_key_id: $ACCESS_KEY_ID
       access_key_secret: $ACCESS_KEY_SECRET
