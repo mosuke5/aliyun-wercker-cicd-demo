@@ -54,7 +54,8 @@ deploy-staging:
            if [ -d "cicddemo" ]; then
                cd cicddemo && git pull
            else
-               git clone -b prerelease git@bitbucket.org:talzeus/cicddemo.git cicddemo
+               git clone git@bitbucket.org:talzeus/cicddemo.git cicddemo
+               git checkout prerelease
            fi
            exit 0;
         EOF
