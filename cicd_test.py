@@ -15,10 +15,6 @@ class CICDTest(unittest.TestCase):
         rv = self.app.get('/')
         assert rv.status_code == 200
 
-    def test_hello(self):
-        rv = self.app.get('/hello')
-        assert rv.status_code == 200
-
     def test_model_data(self):
         rv = cicd.model_data()
         assert len(rv) == 3
