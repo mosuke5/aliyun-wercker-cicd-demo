@@ -31,13 +31,13 @@ deploy-staging:
     - add-ssh-key:
       keyname: PKEY
     - add-to-known_hosts:
-      hostname: 47.74.11.150
+      hostname: $STAGING_SERVER_IP
       fingerprint: SHA256:QB9bFGtW5EUCIArak1+AwzfWZLL63RIdN7FRc9TlDig
       type: rsa      
     - script:
       name: Install CICD app
       code: |
-        ssh -tt tal@47.74.11.150 << EOF
+        ssh -tt tal@${STAGING_SERVER_IP} << EOF
            if [ -d "cicddemo" ]; then
                cd cicddemo && git pull
            else
@@ -45,13 +45,13 @@ deploy-staging:
            fi
            exit 0;
         EOF
-        ssh -tt tal@47.74.11.150 'cd cicddemo && git pull'
-        ssh -tt tal@47.74.11.150 'sudo pip install virtualenv'
-        ssh -tt tal@47.74.11.150 'cd cicddemo && virtualenv --distribute env'
-        ssh -tt tal@47.74.11.150 'cd cicddemo && source ./env/bin/activate && pip install -r requirements.txt'
-        ssh -tt tal@47.74.11.150 'cd cicddemo && sudo cp ./cicd.service /etc/systemd/system'
-        ssh -tt tal@47.74.11.150 'sudo systemctl start cicd'
-        ssh -tt tal@47.74.11.150 'sudo systemctl enable cicd'
+        ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && git pull'
+        ssh -tt tal@${STAGING_SERVER_IP} 'sudo pip install virtualenv'
+        ssh -tt tal@${STAGING_SERVER_IP}'cd cicddemo && virtualenv --distribute env'
+        ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && source ./env/bin/activate && pip install -r requirements.txt'
+        ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && sudo cp ./cicd.service /etc/systemd/system'
+        ssh -tt tal@${STAGING_SERVER_IP} 'sudo systemctl start cicd'
+        ssh -tt tal@${STAGING_SERVER_IP} 'sudo systemctl enable cicd'
   after-steps:
     - slack-notifier:
       channel: $SLACK_CHANNEL
