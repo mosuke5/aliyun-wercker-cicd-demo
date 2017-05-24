@@ -32,7 +32,7 @@ deploy-staging:
       keyname: PKEY
     - add-to-known_hosts:
       hostname: $STAGING_SERVER_IP
-      fingerprint: SHA256:QB9bFGtW5EUCIArak1+AwzfWZLL63RIdN7FRc9TlDig
+      fingerprint: $STAGING_SERVER_FINGERPRINT
       type: rsa      
     - script:
       name: Install CICD app
