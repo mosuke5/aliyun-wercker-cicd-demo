@@ -47,7 +47,7 @@ deploy-staging:
         EOF
         ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && git pull'
         ssh -tt tal@${STAGING_SERVER_IP} 'sudo pip install virtualenv'
-        ssh -tt tal@${STAGING_SERVER_IP}'cd cicddemo && virtualenv --distribute env'
+        ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && virtualenv --distribute env'
         ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && source ./env/bin/activate && pip install -r requirements.txt'
         ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && sudo cp ./cicd.service /etc/systemd/system'
         ssh -tt tal@${STAGING_SERVER_IP} 'sudo systemctl start cicd'
