@@ -3,7 +3,7 @@ initial-build:
   steps:
     - install-packages:
       name: Install ssh
-      packages: build-essential
+      packages: build-essential curl
     - script:
       name: Install virtualenv
       code: pip install virtualenv
