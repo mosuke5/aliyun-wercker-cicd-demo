@@ -22,54 +22,54 @@ initial-build:
       url: $SLACK_URL
       username: cicdbot
 
-deploy-staging:
-  box: ubuntu
-  steps:
-    - install-packages:
-      name: Install ssh
-      packages: openssh-server openssh-client
-    - add-ssh-key:
-      keyname: PKEY
-    - add-to-known_hosts:
-      hostname: $STAGING_SERVER_IP
-      fingerprint: $STAGING_SERVER_FINGERPRINT
-      type: rsa      
-    - script:
-      name: Install CICD app
-      code: |
-        ssh -tt tal@${STAGING_SERVER_IP} << EOF
-           if [ -d "cicddemo" ]; then
-               cd cicddemo && git pull
-           else
-               git clone git@bitbucket.org:talzeus/cicddemo.git cicddemo
-           fi
-           exit 0;
-        EOF
-        ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && git pull'
-        ssh -tt tal@${STAGING_SERVER_IP} 'sudo pip install virtualenv'
-        ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && virtualenv --distribute env'
-        ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && source ./env/bin/activate && pip install -r requirements.txt'
-        ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && sudo cp ./cicd.service /etc/systemd/system'
-        ssh -tt tal@${STAGING_SERVER_IP} 'sudo systemctl start cicd'
-        ssh -tt tal@${STAGING_SERVER_IP} 'sudo systemctl enable cicd'
-  after-steps:
-    - slack-notifier:
-      channel: $SLACK_CHANNEL
-      url: $SLACK_URL
-      username: cicdbot
-
-prepare-production-image:
-  box: python:2-slim
-  steps:
-    - telescreen/aliyun-build-ecs-image@0.1.1:
-      name: Build ECS Image
-      access_key_id: $ACCESS_KEY_ID
-      access_key_secret: $ACCESS_KEY_SECRET
-      instance_id: $INSTANCE_ID
-      region_id: $REGION_ID
-      image_name: ha-cicd-image
-  after-steps:
-    - slack-notifier:
-      channel: $SLACK_CHANNEL
-      url: $SLACK_URL
-      username: cicdbot
+#deploy-staging:
+#  box: ubuntu
+#  steps:
+#    - install-packages:
+#      name: Install ssh
+#      packages: openssh-server openssh-client
+#    - add-ssh-key:
+#      keyname: PKEY
+#    - add-to-known_hosts:
+#      hostname: $STAGING_SERVER_IP
+#      fingerprint: $STAGING_SERVER_FINGERPRINT
+#      type: rsa      
+#    - script:
+#      name: Install CICD app
+#      code: |
+#        ssh -tt tal@${STAGING_SERVER_IP} << EOF
+#           if [ -d "cicddemo" ]; then
+#               cd cicddemo && git pull
+#           else
+#               git clone git@bitbucket.org:talzeus/cicddemo.git cicddemo
+#           fi
+#           exit 0;
+#        EOF
+#        ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && git pull'
+#        ssh -tt tal@${STAGING_SERVER_IP} 'sudo pip install virtualenv'
+#        ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && virtualenv --distribute env'
+#        ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && source ./env/bin/activate && pip install -r requirements.txt'
+#        ssh -tt tal@${STAGING_SERVER_IP} 'cd cicddemo && sudo cp ./cicd.service /etc/systemd/system'
+#        ssh -tt tal@${STAGING_SERVER_IP} 'sudo systemctl start cicd'
+#        ssh -tt tal@${STAGING_SERVER_IP} 'sudo systemctl enable cicd'
+#  after-steps:
+#    - slack-notifier:
+#      channel: $SLACK_CHANNEL
+#      url: $SLACK_URL
+#      username: cicdbot
+#
+#prepare-production-image:
+#  box: python:2-slim
+#  steps:
+#    - telescreen/aliyun-build-ecs-image@0.1.1:
+#      name: Build ECS Image
+#      access_key_id: $ACCESS_KEY_ID
+#      access_key_secret: $ACCESS_KEY_SECRET
+#      instance_id: $INSTANCE_ID
+#      region_id: $REGION_ID
+#      image_name: ha-cicd-image
+#  after-steps:
+#    - slack-notifier:
+#      channel: $SLACK_CHANNEL
+#      url: $SLACK_URL
+#      username: cicdbot
