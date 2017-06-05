@@ -29,7 +29,7 @@ deploy-staging:
       name: Install ssh
       packages: openssh-server openssh-client curl
     - add-ssh-key:
-      keyname: PKEY_PRIVATE
+      keyname: PKEY
 #    - add-to-known_hosts:
 #      hostname: $STAGING_SERVER_IP
 #      fingerprint: $STAGING_SERVER_FINGERPRINT
